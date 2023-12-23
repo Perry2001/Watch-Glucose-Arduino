@@ -35,9 +35,6 @@ bool stringComplete = false;  // whether the string is complete
 #include <WiFiClient.h>
 
 
-
-const char* ssid = "ysa_mae";//pakirename ito 
-const char* password =  "BabyYsaMae100512@";// and password
 int data1=0;
 int data2=0;
 int  send1=0;
@@ -55,11 +52,18 @@ long lastBeat = 0; //Time at which the last beat occurred
 float beatsPerMinute;
 int beatAvg;
 int delayread=0;
+
+
 void setup()
 {
 delayread=7;
  Serial.begin(9600);
 Serial.println("Initializing...");
+
+
+connectToWiFi(); //function to connect to wifi
+
+/*connectToFirebase();  if ever connected na sa firebase eto yung function tapos change yung need na credetials sa connection.h*/
 
 // Initialize sensor
 if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) //Use default I2C port, 400kHz speed
@@ -76,40 +80,9 @@ particleSensor.setPulseAmplitudeRed(0x0A); //Turn Red LED to low to indicate sen
 particleSensor.setPulseAmplitudeGreen(0); //Turn off Green LED
   // large block of text
  
-tft.setRotation(2);
-  tft.fillScreen(ST77XX_BLACK);
-   
-  tft.setTextWrap(false);
-  tft.fillScreen(ST77XX_BLACK);
-  tft.setCursor(0, 10);
-    tft.setTextColor(ST77XX_GREEN);
-  tft.setTextSize(3);
-  tft.println("  ");
-      tft.setTextColor(ST77XX_GREEN);
-  tft.setTextSize(3);
-  tft.println("  ");
-  tft.setTextColor(ST77XX_GREEN);
-  tft.setTextSize(3);
-  tft.println("   CONNECTING");
-  tft.setTextColor(ST77XX_GREEN);
-  tft.setTextSize(3);
-  tft.println("   TO");
-  tft.setTextColor(ST77XX_GREEN);
-  tft.setTextSize(3);
-  tft.println("  "+String(ssid));
-  tft.setTextColor(ST77XX_GREEN);
-  tft.setTextSize(2);
-  tft.println("  "+String(password));
 
 
-  Serial.printf("Connecting to %s ", ssid);
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println(" connected");
+
   
 }
 
